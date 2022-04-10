@@ -86,6 +86,14 @@ def upload_tx_curr_new_pvls(request):
         
     return render(request, 'app/tx_curr_new_pvls.html', {'form': form})
 
+def update_sync_status():
+    period = Period.objects.get(pk='21/Dec/2021 - 20/Jan/2022')
+    
+    dataElementValue = DataElementValue.objects.filter(synced=False, period=period)
+    
+    for dt in dataElementValue:
+        dt.synced = True
+        dt.save()
 
 
 def post_tx_curr_new_pvls(request):
@@ -107,13 +115,13 @@ def post_tx_curr_new_pvls(request):
         data['value'] = str(dt.value)
         
         dataList.append(data)
-        dt.synced = True
-        dt.save()
+       
     payload['dataValues'] = dataList
     # print(payload)
     try:
         response = requests.post(url, data=payload, auth=('xnhagumbe', 'Go$btgo1'))
         print('Importado com sucesso')
+        update_sync_status()
     except requests.exceptions.RequestException as err:
         print(err)
     
