@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from core.forms import CsvForm, ExcelForm
 from core.models import CsvFile, ExcelFile, Province, District, HealthFacility, Period, DataElementValue, DataElement,\
-                        TxCurrNewPvlsTrim, TxCurrNewPvlsMonth
+                        TxCurrNewPvlsTrim, TxCurrNewPvlsMonth, DataSet
 
 import csv 
 import os
@@ -72,15 +72,17 @@ def upload_tx_curr_new_pvls(request):
             dataElement = obj.objects.get(pk=5)
             for j in range(5, 244):
                 velement = obj.objects.get(pk=j)
-                if velement.element == 'total':
+                if velement.code == 'code':
                     continue
-                dataElement = DataElement.objects.get(pk=velement.element)    
+                dataElement = DataElement.objects.get(pk=velement.code)
+                dataset = DataSet.objects.get(pk=dataElement.dataSet.id)    
                # print(dataElement.id, dataElement.name) 
                 dataElementValue = DataElementValue.objects.create(
                     value=int(rows[j].value),
                     healthFacility=healthFacility,
                     dataElement=dataElement,
-                    period=period
+                    period=period,
+                    dataset=dataset
                 )
                 dataElementValue.save()
         
@@ -97,33 +99,50 @@ def update_sync_status():
 
 
 def post_tx_curr_new_pvls(request):
-    credentials = ('xnhagumbe', 'Go$btgo1')
-    url = 'https://dhis2sand.echomoz.org/api/dataValueSets'
+   # credentials = ('xnhagumbe', 'Go$btgo1')
+   # url = 'https://dhis2sand.echomoz.org/api/dataValueSets'
+    api = Api('https://dhis2sand.echomoz.org', 'xnhagumbe', 'Go$btgo1')   
     data = {}
     dataList = []
     payload = {}
-    
-    #This is for testing purpose
+    payload_list = []
+   
+     
+    # #This is for testing purpose
     period = Period.objects.get(pk='21/Dec/2021 - 20/Jan/2022')
-    
-    dataElementValue = DataElementValue.objects.filter(synced=False, period=period)
-    
-    for dt in dataElementValue:
-        data['dataElement'] = str(dt.dataElement.id)
-        data['period'] = str(dt.period.dhis_designation)
-        data['orgUnit'] = str(dt.healthFacility.code)
-        data['value'] = str(dt.value)
         
+    dataElementValue = DataElementValue.objects.filter(synced=False, period=period)
+    for dt in dataElementValue:
+        data["dataElement"] = str(dt.dataElement.id)
+        data["period"] = str(period.dhis_designation)
+        data["orgUnit"] = str(dt.healthFacility.code)
+        data["value"] = str(dt.value)
         dataList.append(data)
-       
-    payload['dataValues'] = dataList
-    # print(payload)
-    try:
-        response = requests.post(url, data=payload, auth=('xnhagumbe', 'Go$btgo1'))
-        print('Importado com sucesso')
-        update_sync_status()
-    except requests.exceptions.RequestException as err:
-        print(err)
+        print(dataList)
+       # payload["dataValues"] = dataList
+       # print(payload)
+    #     # try:  
+        #     response = api.post('dataValueSets', json=payload)
+        #     print(response.json()['description'])
+        #     print(response.json()['importCount'])
+        #     update_sync_status()
+        # except requests.exceptions.RequestException as err:
+        #     print(err)
+   
+   # print(payload)   
+    #print(dataList)
+    # headers = {'Content-Type': 'application/json'}
+   
+    # try:
+    #     # response = requests.post(url, data=json, headers=headers, auth=credentials)
+    #     #response = api.post('dataValueSets', json=payload)
+    #     # print(response.json()['description'])
+    #     # print(response.json()['importCount'])
+    #     # print(response.status_code)
+    #     print("payload")
+    # # update_sync_status()
+    # except requests.exceptions.RequestException as err:
+    #     print(err)
     
     # for dt in dataElementValue:
     #     data['dataSet'] = dt.dataElement.dataSet.id
@@ -145,6 +164,7 @@ def post_tx_curr_new_pvls(request):
     #     except requests.exceptions.RequestException as err:
     #         print(err)
     # now = datetime.datetime.now()
-    # html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse('Response')
+    # html = "<html><body>payload %s.</body></html>" % now
+   
+    return HttpResponse("Done")
 

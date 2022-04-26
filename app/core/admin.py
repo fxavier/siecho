@@ -36,7 +36,7 @@ class DataSetAdmin(ImportExportMixin, admin.ModelAdmin):
     
 class DataElementValueAdmin(ImportExportMixin, admin.ModelAdmin):
     ordering = ['period']
-    list_display = ['dataElement', 'period', 'healthFacility', 'value', 'synced']
+    list_display = ['dataElement', 'period', 'healthFacility', 'value', 'dataset', 'synced']
     
     
 class HealthFacilityAdmin(ImportExportMixin, admin.ModelAdmin):
@@ -44,10 +44,10 @@ class HealthFacilityAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id','code', 'province_name', 'district_name','healthfacility_name']
     
 class TxCurrNewPvlsTrimAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'element']
+    list_display = ['id', 'dataelement', 'code']
     
 class TxCurrNewPvlsMonthAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'element']
+    list_display = ['id', 'dataelement', 'code']
 
     
 admin.site.register(Period, PeriodAdmin)

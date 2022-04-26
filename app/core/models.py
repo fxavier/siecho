@@ -86,6 +86,7 @@ class DataElementValue(models.Model):
     dataElement = models.ForeignKey('DataElement', on_delete=models.CASCADE)
     period = models.ForeignKey('Period', on_delete=models.CASCADE)
     synced = models.BooleanField(default=False)
+    dataset = models.ForeignKey('DataSet', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.dataElement.name
@@ -130,17 +131,19 @@ class ReportPeriod(models.Model):
     
 class TxCurrNewPvlsTrim(models.Model):
     id = models.IntegerField(primary_key=True)
-    element = models.CharField(max_length=100)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
     
     def __str__(self):
-        return str(self.element)
+        return str(self.dataelement)
     
 class TxCurrNewPvlsMonth(models.Model):
     id = models.IntegerField(primary_key=True)
-    element = models.CharField(max_length=100)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
     
     def __str__(self):
-        return str(self.element)
+        return str(self.dataelement)
     
 
 
