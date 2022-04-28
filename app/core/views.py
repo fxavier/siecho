@@ -15,6 +15,10 @@ import datetime
 
 path = '../vol/web/media/'
 classes = [TxCurrNewPvlsTrim, TxCurrNewPvlsMonth]
+api = Api('https://dhis2sand.echomoz.org', 'xnhagumbe', 'Go$btgo1')   
+data = {}
+dataList = []
+payload = {}
 
 def upload_orgunits(request):
     form = CsvForm(request.POST or None, request.FILES or None)
@@ -99,50 +103,28 @@ def update_sync_status():
 
 
 def post_tx_curr_new_pvls(request):
-   # credentials = ('xnhagumbe', 'Go$btgo1')
-   # url = 'https://dhis2sand.echomoz.org/api/dataValueSets'
-    api = Api('https://dhis2sand.echomoz.org', 'xnhagumbe', 'Go$btgo1')   
-    data = {}
-    dataList = []
-    payload = {}
-    payload_list = []
-   
-     
-    # #This is for testing purpose
     period = Period.objects.get(pk='21/Dec/2021 - 20/Jan/2022')
+    dataSet = DataSet.objects.get(name='ECHO MOZ | TX_CURR')
         
-    dataElementValue = DataElementValue.objects.filter(synced=False, period=period)
+    dataElementValue = DataElementValue.objects.filter(synced=False, period=period, dataset=dataSet)
+   
     for dt in dataElementValue:
         data["dataElement"] = str(dt.dataElement.id)
         data["period"] = str(period.dhis_designation)
         data["orgUnit"] = str(dt.healthFacility.code)
         data["value"] = str(dt.value)
-        dataList.append(data)
-        print(dataList)
-       # payload["dataValues"] = dataList
-       # print(payload)
-    #     # try:  
-        #     response = api.post('dataValueSets', json=payload)
-        #     print(response.json()['description'])
-        #     print(response.json()['importCount'])
-        #     update_sync_status()
-        # except requests.exceptions.RequestException as err:
-        #     print(err)
+        
+        dataList.append(data.copy())
+        
+    payload["dataValues"] = dataList
    
-   # print(payload)   
-    #print(dataList)
-    # headers = {'Content-Type': 'application/json'}
-   
-    # try:
-    #     # response = requests.post(url, data=json, headers=headers, auth=credentials)
-    #     #response = api.post('dataValueSets', json=payload)
-    #     # print(response.json()['description'])
-    #     # print(response.json()['importCount'])
-    #     # print(response.status_code)
-    #     print("payload")
-    # # update_sync_status()
-    # except requests.exceptions.RequestException as err:
-    #     print(err)
+    try:
+        response = api.post('dataValueSets', json=payload)
+        print(response.json()['description'])
+        print(response.json()['importCount'])
+        update_sync_status()
+    except requests.exceptions.RequestException as err:
+        print(err)
     
     # for dt in dataElementValue:
     #     data['dataSet'] = dt.dataElement.dataSet.id
