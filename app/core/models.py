@@ -71,10 +71,10 @@ class DataSet(models.Model):
 class DataElement(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     name = models.CharField(max_length=500, null=True, blank=True)
-    openmrs = models.CharField(max_length=100, null=True, blank=True)
+   # openmrs = models.CharField(max_length=100, null=True, blank=True)
     categoryOptionCombo = models.CharField(max_length=200, null=True, blank=True)
     attributeOptionCombo = models.CharField(max_length=200, null=True, blank=True)
-    dataSet = models.ForeignKey(DataSet, on_delete=models.CASCADE)
+    dataSet = models.ForeignKey(DataSet, on_delete=models.CASCADE, null=True, blank=True)
  
     
     def __str__(self):
@@ -144,6 +144,56 @@ class TxCurrNewPvlsMonth(models.Model):
     
     def __str__(self):
         return str(self.dataelement)
+    
+class TxML(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+
+class TxMLMonth(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+
+class TxRTT(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+    
+class TxRTTMonth(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+    
+class DSD(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+    
+class CXCA(models.Model):
+    id = models.IntegerField(primary_key=True)
+    dataelement = models.CharField(max_length=100)
+    code = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.dataelement)
+    
+
     
 
 

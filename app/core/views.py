@@ -6,7 +6,6 @@ from core.models import CsvFile, ExcelFile, Province, District, HealthFacility, 
 
 import csv 
 import os
-import xlrd
 import openpyxl
 from dhis2 import Api
 import requests
@@ -29,7 +28,6 @@ def upload_orgunits(request):
         csv_file.activated = True
         csv_file.save()
     
-    # csvfile = CsvFile.objects.get(activated=False)
         print(csv_file.file_name)
         Province.objects.all().delete()
         District.objects.all().delete()
@@ -58,9 +56,7 @@ def upload_tx_curr_new_pvls(request):
         excel_file = ExcelFile.objects.get(activated=False)
         excel_file.activated = True
         excel_file.save()
-        # excel_workbook = xlrd.open_workbook(path + str(excel_file.file_name))
-        # excel_worksheet = excel_workbook.sheet_by_name('TX NEW CURR AND PVLS')
-        
+                
         workbook = openpyxl.load_workbook(path + str(excel_file.file_name))
         worksheet = workbook['TX NEW CURR AND PVLS']
         period = Period.objects.get(pk=worksheet["B8"].value)
@@ -79,8 +75,8 @@ def upload_tx_curr_new_pvls(request):
                 if velement.code == 'code':
                     continue
                 dataElement = DataElement.objects.get(pk=velement.code)
+                #print(dataElement.name, dataElement.id)
                 dataset = DataSet.objects.get(pk=dataElement.dataSet.id)    
-               # print(dataElement.id, dataElement.name) 
                 dataElementValue = DataElementValue.objects.create(
                     value=int(rows[j].value),
                     healthFacility=healthFacility,

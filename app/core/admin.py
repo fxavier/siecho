@@ -2,7 +2,10 @@ from django.contrib import admin
 from import_export.admin import ImportExportMixin
 
 from core.models import DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile, Period, \
-                        ReportYear, ReportMonth, ReportPeriodType, ReportPeriod, TxCurrNewPvlsTrim, TxCurrNewPvlsMonth
+                        ReportYear, ReportMonth, ReportPeriodType, ReportPeriod, TxCurrNewPvlsTrim, TxCurrNewPvlsMonth, \
+                        TxML, TxMLMonth, TxRTT, TxRTTMonth, DSD, CXCA
+
+from openmrs_viamo.models import Visit, MissedAppointment
 
 # classes = [
 #     DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile
@@ -13,6 +16,24 @@ from core.models import DataSet, Province, District, HealthFacility, DataElement
     
 class ReportYearAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'designacao']
+    
+class TXMLAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
+    
+class TXMLMonthAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
+    
+class TxRTTMonthAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
+    
+class TXRTTAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
+    
+class DSDAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
+    
+class CXCAAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'dataelement', 'code']
     
 class ReportMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'month', 'code', 'reportperiodtype']
@@ -48,8 +69,25 @@ class TxCurrNewPvlsTrimAdmin(ImportExportMixin, admin.ModelAdmin):
     
 class TxCurrNewPvlsMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-
     
+class VisitAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = [
+             'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender', 'appointment_date',
+             'next_appointment_date', 'pregnant'
+              ]
+    
+class MissedAppointmentAdmin(ImportExportMixin, admin.ModelAdmin):
+     list_display = [
+             'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender',
+             'last_appointment_date', 'pregnant'
+              ]
+
+admin.site.register(TxML, TXMLAdmin)
+admin.site.register(TxMLMonth, TXMLMonthAdmin)
+admin.site.register(TxRTT, TXRTTAdmin)
+admin.site.register(TxRTTMonth, TxRTTMonthAdmin)
+admin.site.register(DSD, DSDAdmin)
+admin.site.register(CXCA, CXCAAdmin)
 admin.site.register(Period, PeriodAdmin)
 admin.site.register(DataSet, DataSetAdmin)
 admin.site.register(Province)
@@ -65,3 +103,5 @@ admin.site.register(ReportMonth, ReportMonthAdmin)
 admin.site.register(ReportPeriod, ReportPeriodAdmin)
 admin.site.register(TxCurrNewPvlsTrim, TxCurrNewPvlsTrimAdmin)
 admin.site.register(TxCurrNewPvlsMonth, TxCurrNewPvlsMonthAdmin)
+admin.site.register(Visit, VisitAdmin)
+admin.site.register(MissedAppointment, MissedAppointmentAdmin)
