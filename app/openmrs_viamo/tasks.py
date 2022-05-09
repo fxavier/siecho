@@ -1,6 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
-from openmrs_viamo.services.data_service import AddDataToMiddleware
+from openmrs_viamo.services.data_service import AddDataToMiddleware, PostData
 from core.utils.constants import Constants
 from core.utils.province_urls import ProvinceUrl
 
@@ -158,3 +158,11 @@ def add_missed_appointments_tete_zobue():
     tete_zobue = ProvinceUrl('Tete', Constants.tete_zobue.value)
     instance = tete_zobue.get_url(Constants.tete_uuid_missed_appointment.value)
     AddDataToMiddleware().add_missed_appointments('Tete', instance)
+    
+@shared_task
+def post_sms_reminder():
+    PostData.post_sms_reminder()
+    
+@shared_task
+def post_missed_appointment():
+    PostData.post_missed_appointment()

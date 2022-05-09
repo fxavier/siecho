@@ -1,5 +1,5 @@
-Django #>=4.0.3,<4.1
-psycopg2>=2.9.3,<2.10
+Django>=3.2.5,<3.3
+psycopg2>=2.8.6,<2.9
 import-export==0.2.67.dev6
 django-import-export #==2.7.1
 # pandas>=1.4.1,<1.5
@@ -10,3 +10,5 @@ dhis2.py>=2.3.0,<2.4
 django-celery-beat #>=2.2.1,<2.3
 django-celery-results #>=2.2.0,<2.3
 redis>=3.5.3,<3.6
+uWSGI>=2.0.19.1,<2.1
+celery>=5.1.2,<5.2

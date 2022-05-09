@@ -155,7 +155,6 @@ class PostData:
             data_values = {
              "patient_identifier": m.patient_identifier,
              "last_appointment_date": '{:%Y-%m-%d}'.format(m.last_appointment_date),
-             "actual_visit_date": '{:%Y-%m-%d}'.format(m.appointment_date),
              "gender": m.gender,
              "pregnant": m.pregnant,
              "age": m.age,
