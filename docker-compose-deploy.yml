@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+    container_name: siechoapp
     restart: always
     volumes:
       - static-data:/vol/web
@@ -19,6 +20,7 @@ services:
 
   db:
     image: postgres:13-alpine
+    container_name: siechodb
     restart: always
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -37,6 +39,51 @@ services:
       - 80:8000
     volumes:
       - static-data:/vol/static
+
+  celery:
+    restart: always
+    build: 
+      context: . 
+    command: celery -A app worker -l info
+    volumes: 
+      - ./app:/app
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - app
+      - redis
+    
+  celery-beat:
+    build:
+      context: .
+    command: celery -A app beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes: 
+      - ./app:/app
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - app
+      - redis
+
+  redis:
+      image: redis:alpine
+      ports:
+        - 6379:6379
+
 
 volumes:
   postgres-data:
