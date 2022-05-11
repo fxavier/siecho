@@ -13,13 +13,12 @@ class Constants(Enum):
     
     rest_uri = '/ws/rest/v1/reportingrest/dataSet/'
     
-    niassa_uuid_reminder = 'ffeed60a-2a94-4875-80cd-4baca75f13d4'
-    niassa_uuid_missed_appointment = '9f698aed-7559-4dbf-8f96-d607341f13af'
+    uuid_reminder = 'ffeed60a-2a94-4875-80cd-4baca75f13d4'
+    uuid_missed_appointment = '043c97e4-c30f-4c6d-b8bc-943ad0f0424b'
     
     niassa_general = 'http://197.218.206.34:8080/openmrs'
     niassa_hpl = 'http://197.218.206.34:8080/hpl'
     
-    tete_uuid_reminder = 'ffeed60a-2a94-4875-80cd-4baca75f13d4'
     
     tete_general = 'http://197.218.241.174:8080/openmrs'
     tete_hpt = 'http://197.218.241.174:8080/hpt'
@@ -32,11 +31,5 @@ class Constants(Enum):
     tete_songo = 'http://197.218.241.174:8080/songo'
     tete_ulongue = 'http://197.218.241.174:8080/ulongue'
     tete_zobue = 'http://197.218.241.174:8080/zobue'
-    
-    manica_general = 'http://41.191.74.42:8080/openmrs'
-    manica_macate = 'http://41.191.74.42:8080/macate'
-    manica_sdabril = 'http://41.191.74.42:8080/sdabril'
-    manica_nhamaonha = 'http://41.191.74.42:8080/nhamaonha'
-    manica_pdmaio = 'http://41.191.74.42:8080/pdmaio'
     
     

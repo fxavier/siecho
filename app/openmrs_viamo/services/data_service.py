@@ -106,7 +106,7 @@ class PostData:
                 "receive_voice": "1",
                 "receive_sms": "1",
                 "preferred_channel": "1",
-                "groups": "463089",
+                "groups": "463089", 
                 "active": "1",
             }
                         
@@ -125,12 +125,24 @@ class PostData:
             payload_list.append(payload)
             
         records = 0
+        records_not_sent = []
         try:
             for data in payload_list:
-                records += 1
+                
+          
                 response = requests.post(cls.api_url, json=data)
                 print(f'Sending {records} of {len(payload_list)} Records')
-                print(response.raise_for_status)
+                if response.status_code == 200:
+                    records += 1
+                    visit = Visit.objects.get(patient_identifier=data['property']['patient_identifier'])
+                    visit.synced = True
+                    visit.save()
+                else:
+                    records_not_sent.append(data.copy())
+            print(records_not_sent)
+                
+                
+                
 
         except requests.exceptions.RequestException as err:
             print(err)
@@ -147,7 +159,7 @@ class PostData:
                 "receive_voice": "1",
                 "receive_sms": "1",
                 "preferred_channel": "1",
-                "groups": "463089",
+                "groups": "485273",
                 "active": "1",
             }
                         
@@ -166,13 +178,25 @@ class PostData:
             payload_list.append(payload)
             
         records = 0
+        records_not_sent = []
         try:
             for data in payload_list:
                 records += 1
                 response = requests.post(cls.api_url, json=data)
                 print(f'Sending {records} of {len(payload_list)} Records')
-                print(response.raise_for_status)
+                if response.status_code == 200:
+                    records += 1
+                    missed = MissedAppointment.objects.get(patient_identifier=data['property']['patient_identifier'])
+                    missed.synced = True
+                    missed.save()
+                else:
+                    records_not_sent.append(data.copy())
+            
+            print(records_not_sent)
 
         except requests.exceptions.RequestException as err:
             print(err)
             
+    
+            
+        
