@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'import_export',
+    'rest_framework',
     'xlrd',
     'core',
     'openmrs_dhis2',
     'openmrs_viamo',
+    'assistencia_tecnica',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -138,6 +141,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user.User'
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')

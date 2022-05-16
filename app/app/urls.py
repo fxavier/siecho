@@ -5,7 +5,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls', namespace='core'))
+    path('', include('core.urls', namespace='core')),
+    path('api/assistencia-tecnica/', include('assistencia_tecnica.urls')),
 ]
 
 if settings.DEBUG:
