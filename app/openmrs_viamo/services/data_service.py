@@ -124,6 +124,9 @@ class PostData:
             payload['property'] = data_values
             payload_list.append(payload)
             
+            v.synced = True
+            v.save()
+            
         records = 0
         records_not_sent = []
         try:
@@ -134,9 +137,6 @@ class PostData:
                 print(f'Sending {records} of {len(payload_list)} Records')
                 if response.status_code == 200:
                     records += 1
-                    visit = Visit.objects.get(patient_identifier=data['property']['patient_identifier'])
-                    visit.synced = True
-                    visit.save()
                 else:
                     records_not_sent.append(data.copy())
             print(records_not_sent)
@@ -177,6 +177,9 @@ class PostData:
             payload['property'] = data_values
             payload_list.append(payload)
             
+            m.synced = True
+            m.save()
+            
         records = 0
         records_not_sent = []
         try:
@@ -186,9 +189,9 @@ class PostData:
                 print(f'Sending {records} of {len(payload_list)} Records')
                 if response.status_code == 200:
                     records += 1
-                    missed = MissedAppointment.objects.get(patient_identifier=data['property']['patient_identifier'])
-                    missed.synced = True
-                    missed.save()
+                    # missed = MissedAppointment.objects.get(patient_identifier=data['property']['patient_identifier'])
+                    # missed.synced = True
+                    # missed.save()
                 else:
                     records_not_sent.append(data.copy())
             
@@ -197,6 +200,5 @@ class PostData:
         except requests.exceptions.RequestException as err:
             print(err)
             
-    
-            
+
         
