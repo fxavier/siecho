@@ -4,13 +4,18 @@ from openmrs_viamo.services.data_service import AddDataToMiddleware, PostData
 from core.utils.province_urls import ProvinceUrl
 from core.utils.constants import Constants
 from openmrs_viamo.models import Visit, MissedAppointment
+from si_stock.models import Resumo
+from si_stock.data_service import get_resumo_data
 
 UUID_REMINDER = Constants.uuid_reminder.value
 UUID_MISSED_APPOINTMENT = Constants.uuid_missed_appointment.value
 
 @shared_task
-def print_hello():
-    print('Hello')
+def insert_resumo():
+    resumo =  Resumo.objects.all()
+    if resumo:
+        resumo.delete()
+    get_resumo_data()
 
 # ARV DISPENSING ALERTS
 @shared_task
@@ -170,6 +175,9 @@ def post_sms_reminder():
 def post_missed_appointment():
     PostData.post_missed_appointment()
     
+
+# Deleting data
+    
 @shared_task   
 def delete_visits():
     Visit.objects.all().delete()
@@ -177,3 +185,19 @@ def delete_visits():
 @shared_task  
 def delete_missed_appointments():
     MissedAppointment.objects.all().delete()
+    
+@shared_task 
+def update_visits():
+    visit = Visit.objects.filter(synced=False)
+    for data in visit:
+        data.synced = True
+        data.save()
+    
+@shared_task 
+def update_missed_appointments():
+    missed_appointment = MissedAppointment.objects.filter(synced=False)
+    for data in missed_appointment:
+        data.synced = True
+        data.save()
+    
+    

@@ -1,5 +1,5 @@
 import requests
-from  django.db.models import Q
+from django.db.models import Q
 from dataclasses import dataclass
 from openmrs_viamo.models import Visit, MissedAppointment
 from datetime import datetime, timedelta, date
@@ -112,7 +112,7 @@ class PostData:
                         
             data_values = {
              "patient_identifier": v.patient_identifier,
-             "appointment_date": '{:%Y-%m-%d}'.format(v.appointment_date),
+             "appointment_date": '{:%Y-%m-%d}'.format(v.next_appointment_date),
              "gender": v.gender,
              "pregnant": v.pregnant,
              "age": v.age,
@@ -131,15 +131,13 @@ class PostData:
         records_not_sent = []
         try:
             for data in payload_list:
-                
-          
                 response = requests.post(cls.api_url, json=data)
                 print(f'Sending {records} of {len(payload_list)} Records')
                 if response.status_code == 200:
                     records += 1
                 else:
                     records_not_sent.append(data.copy())
-            print(records_not_sent)
+            print(f'Recordes not sent: {records_not_sent}')
                 
                 
                 
@@ -150,7 +148,8 @@ class PostData:
     @classmethod       
     def post_missed_appointment(cls):
         payload_list = []
-        missed_appointment = MissedAppointment.objects.exclude(phone_number=None).filter(synced=False, drug_pickup_missed_days__gt=0, visit_missed_days__gt=0)
+        missed_appointment = MissedAppointment.objects.exclude(phone_number=None).filter(
+            synced=False, drug_pickup_missed_days__gt=0, visit_missed_days__gt=0, last_appointment_date__gt='2022-07-30')
         for m in missed_appointment:
             phone = m.phone_number.strip()
             payload = {
@@ -184,18 +183,14 @@ class PostData:
         records_not_sent = []
         try:
             for data in payload_list:
-                records += 1
                 response = requests.post(cls.api_url, json=data)
                 print(f'Sending {records} of {len(payload_list)} Records')
                 if response.status_code == 200:
                     records += 1
-                    # missed = MissedAppointment.objects.get(patient_identifier=data['property']['patient_identifier'])
-                    # missed.synced = True
-                    # missed.save()
                 else:
                     records_not_sent.append(data.copy())
             
-            print(records_not_sent)
+            print(f'Records not sent: {records_not_sent}')
 
         except requests.exceptions.RequestException as err:
             print(err)

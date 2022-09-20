@@ -11,6 +11,7 @@ from openmrs_viamo.models import Visit, MissedAppointment
 
 from assistencia_tecnica.models import Provincia, Distrito, UnidadeSanitaria, Sector, Area, Indicador, FichaAssistenciaTecnica
 from user.models import User
+from si_stock import models
 
 # classes = [
 #     DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile
@@ -98,13 +99,13 @@ class TxCurrNewPvlsMonthAdmin(ImportExportMixin, admin.ModelAdmin):
 class VisitAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = [
              'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender', 'appointment_date',
-             'next_appointment_date', 'pregnant'
+             'next_appointment_date', 'synced'
               ]
     
 class MissedAppointmentAdmin(ImportExportMixin, admin.ModelAdmin):
      list_display = [
              'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender',
-             'last_appointment_date', 'pregnant'
+             'last_appointment_date', 'synced'
               ]
      
 class ProvinciaAdmin(ImportExportMixin, admin.ModelAdmin):
@@ -118,7 +119,7 @@ class UnidadeSanitariaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome', 'distrito']
     
 class SectorAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['id','nome']
     
 class AreaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome', 'sector']
@@ -128,6 +129,39 @@ class IndicadorAdmin(ImportExportMixin, admin.ModelAdmin):
     
 class FichaAssistenciaTecnicaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome_responsavel', 'nome_provedor', 'problemas_identificados', 'tipo_problema', 'atcividades_realizar_resolver_problema']
+    
+    
+class ProvinciaAdminStock(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'nome']
+
+class SectorAdminStock(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'provincia', 'nome']
+    list_filter = ('nome', 'provincia',)
+    
+class InstrumentoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'provincia', 'sector', 'nome', 'stock', 'ano', 'quantidade_necessaria']
+    list_filter = ('provincia', 'sector', 'nome',)
+    
+class NecessidadeAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'provincia', 'sector', 'instrumento', 'ano', 'quantidade']
+    list_filter = ('provincia', 'sector',)
+    
+class EntradaAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'data_entrada', 'fornecedor', 'quantidade', 'provincia','instrumento']
+    list_filter = ('provincia',)
+    
+class LevantamentoDepositoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'data_levantamento', 'provincia', 'instrumento', 'quantidade']
+    
+class RequisicaoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'data_requisicao', 'provincia', 'instrumento', 'quantidade', 'status_requisicao']
+    
+class AprovacaoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'requisicao', 'tipo_aprovacao', 'comentario']
+    
+class ResumoAdmin(admin.ModelAdmin):
+    list_display = ['provincia', 'sector', 'instrumento', 'data_entrada', 'quantidade', 'stock', 'necessidade', 'data_requisicao', 'quantidade_requisicao', 'status_requisicao']
+    list_filter = ('provincia', 'sector',)
 
 admin.site.register(User, UserAdmin)
 admin.site.register(TxML, TXMLAdmin)
@@ -160,3 +194,11 @@ admin.site.register(Sector, SectorAdmin)
 admin.site.register(Area, AreaAdmin)
 admin.site.register(Indicador, IndicadorAdmin)
 admin.site.register(FichaAssistenciaTecnica, FichaAssistenciaTecnicaAdmin)
+admin.site.register(models.Provincia, ProvinciaAdminStock)
+admin.site.register(models.Sector, SectorAdminStock)
+admin.site.register(models.Instrumento, InstrumentoAdmin)
+admin.site.register(models.Necessidade, NecessidadeAdmin)
+admin.site.register(models.Entrada, EntradaAdmin)
+admin.site.register(models.Requisicao, RequisicaoAdmin)
+admin.site.register(models.Aprovacao, AprovacaoAdmin)
+admin.site.register(models.Resumo, ResumoAdmin)

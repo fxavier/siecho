@@ -15,6 +15,7 @@ class Constants(Enum):
     
     uuid_reminder = 'ffeed60a-2a94-4875-80cd-4baca75f13d4'
     uuid_missed_appointment = '043c97e4-c30f-4c6d-b8bc-943ad0f0424b'
+    uuid_TX_NEW = 'c939ea85-f6f0-4592-9c43-698deafb8e34'
     
     niassa_general = 'http://197.218.206.34:8080/openmrs'
     niassa_hpl = 'http://197.218.206.34:8080/hpl'

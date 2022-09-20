@@ -15,7 +15,7 @@
   <!-- Dev Search UI -->
   <link rel="stylesheet" href="styles/app.css" />
 
-  <title>DevSearch - Connect with Developers!</title>
+  <title>SIECHO</title>
 </head>
 
 <body>
@@ -32,9 +32,9 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="index.html">Developers</a></li>
+          {% comment %} <li class="header__menuItem"><a href="index.html">Developers</a></li>
           <li class="header__menuItem"><a href="projects.html">Projects</a></li>
-          <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
+          <li class="header__menuItem"><a href="inbox.html">Inbox</a></li> {% endcomment %}
           <li class="header__menuItem"><a href="account.html">My Account</a></li>
           <li class="header__menuItem"><a href="login.html" class="btn btn--sub">Login/Sign Up</a></li>
         </ul>
@@ -47,12 +47,12 @@
     <section class="hero-section text-center">
       <div class="container container--narrow">
         <div class="hero-section__box">
-          <h2>CONNECT WITH <span>DEVELOPERS</span></h2>
+          <h2>CONNECT WITH <span>PEOPLE</span></h2>
           <h2>FROM AROUND THE WORLD</h2>
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          {% comment %} <form class="form" action="#" method="get">
             <div class="form__field">
               <label for="formInput#search">Search Developers </label>
               <input class="input input--text" id="formInput#search" type="text" name="text"
@@ -60,7 +60,7 @@
             </div>
 
             <input class="btn btn--sub btn--lg" type="submit" value="Search" />
-          </form>
+          </form> {% endcomment %}
         </div>
       </div>
     </section>

@@ -35,26 +35,44 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
     'django_celery_results',
     'django_celery_beat',
     'import_export',
     'rest_framework',
+    'corsheaders',
     'xlrd',
     'core',
     'openmrs_dhis2',
     'openmrs_viamo',
     'assistencia_tecnica',
     'user',
+    'si_stock',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'app.schema.schema',
+    'MIDDLEWARE': [
+        # 'graphql_jwt.middleware.JSONWebTokenMiddleware',
+        'app.middlewares.CustomMiddleware',
+        'app.middlewares.CustomPaginationMiddleware',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -146,3 +164,7 @@ AUTH_USER_MODEL = 'user.User'
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]

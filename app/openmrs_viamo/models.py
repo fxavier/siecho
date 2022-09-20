@@ -45,3 +45,7 @@ class MissedAppointment(models.Model):
     
     def __str__(self):
         return self.patient_name
+
+
+
+
