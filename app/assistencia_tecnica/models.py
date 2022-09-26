@@ -6,6 +6,11 @@ TIPO_PROBLEMA = (
     ('Novo', 'Novo')
 )
 
+STATUS = (
+    ('Pendente', 'Pendente'),
+    ('Resolvido', 'Resolvido')
+)
+
 class Provincia(models.Model):
     nome = models.CharField(max_length=255)
     
@@ -60,6 +65,7 @@ class FichaAssistenciaTecnica(models.Model):
     unidades_sanitaria = models.ForeignKey(UnidadeSanitaria, related_name="fichas", on_delete=models.CASCADE)
     indicador = models.ForeignKey(Indicador, related_name="fichas", on_delete=models.CASCADE)
     comentarios = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=STATUS, default="Pendente")
     feito_por = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='fichas',
         on_delete=models.CASCADE
