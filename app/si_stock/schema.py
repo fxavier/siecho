@@ -1,7 +1,7 @@
 from sre_constants import IN
 import graphene
 from graphene_django import DjangoObjectType
-from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo
+from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo, ResumoVisualizacao
 from graphql import GraphQLError
 from django.db.models import Q
 from user.models import User
@@ -36,6 +36,10 @@ class AprovacaoType(DjangoObjectType):
 class ResumoType(DjangoObjectType):
     class Meta:
         model = Resumo
+        
+class ResumoVisualizacaoType(DjangoObjectType):
+    class Meta:
+        model = ResumoVisualizacao
 
 class Query(graphene.ObjectType):
     provincias = graphene.List(ProvinciaType)
@@ -58,6 +62,7 @@ class Query(graphene.ObjectType):
     requisicao_by_province = graphene.List(RequisicaoType, provincia_id=graphene.Int())
     aprovacoes = graphene.Field(paginate(AprovacaoType), page=graphene.Int())
     resumos = graphene.List(ResumoType)
+    resumo_visualizacoes = graphene.List(ResumoVisualizacaoType)
     
     
     def resolve_provincias(self, info):
@@ -159,6 +164,19 @@ class Query(graphene.ObjectType):
                                   " left join si_stock_entrada e on e.instrumento_id=i.id" \
                                   " left join si_stock_requisicao r on r.instrumento_id=i.id"
                                    )
+        
+        
+    def resolve_resumo_visualizacoes(self, info):
+        return ResumoVisualizacao.objects.raw("select 1 AS id, i.nome AS instrumento, sum(e.quantidade) AS ECHO_MISAU, sum(i.quantidade_necessaria) Necessidade," \
+                                               "sum(i.stock) AS  Stock_actual from si_stock_entrada e inner join si_stock_instrumento i on i.id=e.instrumento_id group by i.nome"
+                                               )
+        
+# select s.nome as sector, i.nome as instrumento, sum(e.quantidade), e.fornecedor fornecedor, sum(i.quantidade_necessaria) Necessidade, sum(i.stock) as stock 
+# from si_stock_instrumento i 
+# inner join si_stock_sector s on s.id=i.sector_id 
+# inner join  si_stock_entrada e on e.instrumento_id=i.id
+# where i.ano=2022
+# group by s.id, i.id, e.fornecedor
 
 class CreateSector(graphene.Mutation):
     sector = graphene.Field(SectorType)

@@ -3,7 +3,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo
+from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo, ResumoVisualizacao
 
 from si_stock import serializers
 
@@ -83,4 +83,11 @@ class ResumoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                                   " left join si_stock_requisicao r on r.instrumento_id=i.id"
                                    )
     serializer_class = serializers.ResumoSerializer
+    
+class ResumoVisualizacaoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset =  ResumoVisualizacao.objects.raw("select 1 AS id, i.nome AS instrumento, sum(e.quantidade) AS ECHO_MISAU, sum(i.quantidade_necessaria) Necessidade," \
+                                               "sum(i.stock) AS  Stock_actual from si_stock_entrada e inner join si_stock_instrumento i on i.id=e.instrumento_id group by i.nome"
+                                               )
+    
+    serializer_class = serializers.ResumoVisualizacaoSerializer
     

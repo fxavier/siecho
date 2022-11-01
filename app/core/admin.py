@@ -12,6 +12,7 @@ from openmrs_viamo.models import Visit, MissedAppointment
 from assistencia_tecnica.models import Provincia, Distrito, UnidadeSanitaria, Sector, Area, Indicador, FichaAssistenciaTecnica
 from user.models import User
 from si_stock import models
+from sondagemIS import models
 
 # classes = [
 #     DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile
@@ -162,6 +163,12 @@ class AprovacaoAdmin(ImportExportMixin, admin.ModelAdmin):
 class ResumoAdmin(admin.ModelAdmin):
     list_display = ['provincia', 'sector', 'instrumento', 'data_entrada', 'quantidade', 'stock', 'necessidade', 'data_requisicao', 'quantidade_requisicao', 'status_requisicao']
     list_filter = ('provincia', 'sector',)
+    
+class IntervencaoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'nome']
+    
+class InqueritoAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'nome', 'provincia', 'distrito', 'unidades_sanitaria', 'data_inquerito', 'razoes_procura_servicos', 'faixa_etaria', 'sector_clinico']
 
 admin.site.register(User, UserAdmin)
 admin.site.register(TxML, TXMLAdmin)
@@ -202,3 +209,9 @@ admin.site.register(models.Entrada, EntradaAdmin)
 admin.site.register(models.Requisicao, RequisicaoAdmin)
 admin.site.register(models.Aprovacao, AprovacaoAdmin)
 admin.site.register(models.Resumo, ResumoAdmin)
+admin.site.register(models.Intervencao, IntervencaoAdmin)
+admin.site.register(models.FaixaEtaria)
+admin.site.register(models.SectorClinico)
+admin.site.register(models.ServicoCuidadosTratamento)
+admin.site.register(models.ServicoPrevencao)
+admin.site.register(models.Inquerito, InqueritoAdmin)

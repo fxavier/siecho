@@ -14,6 +14,7 @@ router.register('entradas', views.EntradaViewSet)
 # router.register('entradas/<int:pk>/', views.EntradaViewSet)
 router.register('aprovacoes', views.AprovacaoViewSet)
 router.register('resumo', views.ResumoViewSet)
+router.register('resumo_visualizacoes', views.ResumoVisualizacaoViewSet)
 
 
 

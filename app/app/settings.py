@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'assistencia_tecnica',
     'user',
     'si_stock',
+    'sondagemIS',
 ]
 
 GRAPHENE = {

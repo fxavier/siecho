@@ -135,6 +135,20 @@ class Resumo(models.Model):
         
     def __str__(self):
         return self.instrumento.nome
+    
+class ResumoVisualizacao(models.Model):
+    instrumento = models.CharField(max_length=255, blank=True, null=True)
+    echo_misau = models.IntegerField(blank=True, null=True)
+    necessidade = models.IntegerField(blank=True, null=True)
+    stock_actual = models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        verbose_name = 'Resumo Visualizacao'
+        verbose_name_plural = 'Resumo Visualizacoes'
+        
+    def __str__(self):
+        return self.instrumento
+    
    
 
 def update_stock(sender, instance, created, *args, **kwargs):

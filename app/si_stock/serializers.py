@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo
+from si_stock.models import Provincia, Sector, Instrumento, Entrada, Requisicao, Aprovacao, Resumo, ResumoVisualizacao
 
 class ProvinciaSerializer(serializers.ModelSerializer):
       
@@ -74,3 +74,10 @@ class ResumoSerializer(serializers.ModelSerializer):
         model = Resumo
         fields = '__all__'
         read_only_fields = ('id',)
+        
+class ResumoVisualizacaoSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = ResumoVisualizacao
+         fields ='__all__'
+         read_only_fields = ('id',)
+         

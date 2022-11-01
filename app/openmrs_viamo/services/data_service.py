@@ -149,7 +149,7 @@ class PostData:
     def post_missed_appointment(cls):
         payload_list = []
         missed_appointment = MissedAppointment.objects.exclude(phone_number=None).filter(
-            synced=False, drug_pickup_missed_days__gt=0, visit_missed_days__gt=0, last_appointment_date__gt='2022-07-30')
+            synced=False, drug_pickup_missed_days__gt=0, visit_missed_days__gt=0, last_appointment_date__gt='2022-01-01')
         for m in missed_appointment:
             phone = m.phone_number.strip()
             payload = {
