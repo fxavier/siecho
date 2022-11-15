@@ -11,8 +11,8 @@ from openmrs_viamo.models import Visit, MissedAppointment
 
 from assistencia_tecnica.models import Provincia, Distrito, UnidadeSanitaria, Sector, Area, Indicador, FichaAssistenciaTecnica
 from user.models import User
-from si_stock import models
-from sondagemIS import models
+from si_stock.models import Provincia as ProvinciaStock, Sector as SectorStock, Instrumento, Entrada, Requisicao, Aprovacao, Resumo, ResumoVisualizacao, Necessidade
+from sondagemIS.models import Intervencao, FaixaEtaria, ServicoPrevencao, ServicoCuidadosTratamento, SectorClinico, Inquerito
 
 # classes = [
 #     DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile
@@ -168,7 +168,7 @@ class IntervencaoAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome']
     
 class InqueritoAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'nome', 'provincia', 'distrito', 'unidades_sanitaria', 'data_inquerito', 'razoes_procura_servicos', 'faixa_etaria', 'sector_clinico']
+    list_display = ['id', 'nome', 'provincia', 'distrito', 'unidade_sanitaria', 'data_inquerito', 'razoes_procura_servicos', 'faixa_etaria', 'sector_clinico']
 
 admin.site.register(User, UserAdmin)
 admin.site.register(TxML, TXMLAdmin)
@@ -201,17 +201,19 @@ admin.site.register(Sector, SectorAdmin)
 admin.site.register(Area, AreaAdmin)
 admin.site.register(Indicador, IndicadorAdmin)
 admin.site.register(FichaAssistenciaTecnica, FichaAssistenciaTecnicaAdmin)
-admin.site.register(models.Provincia, ProvinciaAdminStock)
-admin.site.register(models.Sector, SectorAdminStock)
-admin.site.register(models.Instrumento, InstrumentoAdmin)
-admin.site.register(models.Necessidade, NecessidadeAdmin)
-admin.site.register(models.Entrada, EntradaAdmin)
-admin.site.register(models.Requisicao, RequisicaoAdmin)
-admin.site.register(models.Aprovacao, AprovacaoAdmin)
-admin.site.register(models.Resumo, ResumoAdmin)
-admin.site.register(models.Intervencao, IntervencaoAdmin)
-admin.site.register(models.FaixaEtaria)
-admin.site.register(models.SectorClinico)
-admin.site.register(models.ServicoCuidadosTratamento)
-admin.site.register(models.ServicoPrevencao)
-admin.site.register(models.Inquerito, InqueritoAdmin)
+admin.site.register(ProvinciaStock, ProvinciaAdminStock)
+admin.site.register(SectorStock, SectorAdminStock)
+admin.site.register(Instrumento, InstrumentoAdmin)
+admin.site.register(Necessidade, NecessidadeAdmin)
+admin.site.register(Entrada, EntradaAdmin)
+admin.site.register(Requisicao, RequisicaoAdmin)
+admin.site.register(Aprovacao, AprovacaoAdmin)
+admin.site.register(Resumo, ResumoAdmin)
+admin.site.register(Intervencao, IntervencaoAdmin)
+admin.site.register(FaixaEtaria)
+admin.site.register(SectorClinico)
+admin.site.register(ServicoCuidadosTratamento)
+admin.site.register(ServicoPrevencao)
+admin.site.register(Inquerito, InqueritoAdmin)
+
+admin.site.site_header = 'ECHO SYSTEMS'

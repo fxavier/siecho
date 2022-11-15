@@ -45,6 +45,9 @@ class ServicoPrevencao(models.Model):
     class Meta:
         verbose_name_plural = 'Servicos de Prevencao'
         
+    def __str__(self):
+        return self.nome
+        
 class Inquerito(models.Model):
     nome = models.CharField(max_length=100)
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
