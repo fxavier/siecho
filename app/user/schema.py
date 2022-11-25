@@ -1,6 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from django.contrib.auth import authenticate
+from graphql import GraphQLError
 from datetime import datetime
 from user.models import User
 from app.authentication import TokenManager
@@ -11,10 +12,10 @@ class UserType(DjangoObjectType):
     class Meta:
         model = User
 
+
 class Query(graphene.ObjectType):
     users = graphene.Field(paginate(UserType), page=graphene.Int())
     me = graphene.Field(UserType)
-    
 
     def resolve_users(self, info, **kwargs):
         return User.objects.filter(**kwargs)
@@ -22,31 +23,32 @@ class Query(graphene.ObjectType):
     @is_authenticated
     def resolve_user(self, info, id):
         return User.objects.get(pk=id)
-    
+
     @is_authenticated
     def resolve_me(self, info):
-        return info.context.user
-    
-    
+        user = info.context.user
+        return user
+
+
 class RegisterUser(graphene.Mutation):
     status = graphene.Boolean()
     message = graphene.String()
-    
+
     class Arguments:
         email = graphene.String(required=True)
         password = graphene.String(required=True)
         first_name = graphene.String()
         last_name = graphene.String()
 
-        
     def mutate(self, info, email, password):
         User.objects.create_user(email, password)
-        
+
         return RegisterUser(
-            status=True, 
+            status=True,
             message="User Created successfully"
         )
-        
+
+
 class LoginUser(graphene.Mutation):
     access = graphene.String()
     refresh = graphene.String()
@@ -92,6 +94,7 @@ class GetAccess(graphene.Mutation):
         return GetAccess(
             access=access
         )
+
 
 class Mutation(graphene.ObjectType):
     register_user = RegisterUser.Field()

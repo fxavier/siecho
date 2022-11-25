@@ -53,7 +53,7 @@ class Inquerito(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     distrito = models.ForeignKey(Distrito, on_delete=models.CASCADE)
     unidade_sanitaria = models.ForeignKey(UnidadeSanitaria, on_delete=models.CASCADE)
-    data_inquerito = models.DateTimeField(auto_now=True)
+    data_inquerito = models.DateField(auto_now=True)
     razoes_procura_servicos = models.ForeignKey(Intervencao, on_delete=models.CASCADE, null=True, blank=True)
     outra_razao = models.CharField(max_length=100, null=True, blank=True)
     faixa_etaria = models.ForeignKey(FaixaEtaria, on_delete=models.CASCADE)

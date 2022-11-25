@@ -2,6 +2,8 @@ import graphene
 from graphene_django import DjangoObjectType
 from sondagemIS.models import Intervencao, Inquerito, FaixaEtaria, ServicoPrevencao, ServicoCuidadosTratamento, SectorClinico
 from assistencia_tecnica.models import Provincia, Distrito, UnidadeSanitaria
+from app.permissions import is_authenticated, paginate
+from django.db.models import Q
 
 class ProvinciaSondagemType(DjangoObjectType):
     class Meta:
@@ -49,7 +51,7 @@ class Query(graphene.ObjectType):
     us_by_district = graphene.List(UnidadeSanitariaSondagemType, distrito_id=graphene.Int())
     intervencoes = graphene.List(IntervencaoType)
     faixas_etarias = graphene.List(FaixaEtariaType)
-    inqueritos = graphene.List(InqueritoType)
+    inqueritos = graphene.Field(paginate(InqueritoType), page=graphene.Int(), search=graphene.String())
     servicos_prevencaos = graphene.List(ServicoPrevencaoType)
     servicos_cuidados = graphene.List(ServicoCuidadosTratamentoType)
     sectores_clinicos = graphene.List(SectorClinicoType)
@@ -61,8 +63,9 @@ class Query(graphene.ObjectType):
         return Distrito.objects.all()
     
     def resolve_distrito_by_province(self, info, provincia_id):
-        provincia = Provincia.Objects.get(id=provincia_id)
+        provincia = Provincia.objects.get(id=provincia_id)
         return Distrito.objects.filter(provincia=provincia)
+      
     
     def resolve_unidades_sanitarias(self, info):
         return UnidadeSanitaria.objects.all()
@@ -72,13 +75,21 @@ class Query(graphene.ObjectType):
         return Distrito.objects.filter(distrito=distrito)
     
     def resolve_intervencoes(self, info):
-        return Intervencao.Object.all()
+        return Intervencao.objects.all()
     
     def resolve_faixas_etarias(self, info):
         return FaixaEtaria.objects.all()
     
-    def resolve_inqueritos(self, info):
-        return Inquerito.objects.all()
+    def resolve_inqueritos(self, info, search=None):
+        if search:
+            filter = (
+                Q(provincia__nome__icontains=search) |
+                Q(distrito__nome__icontains=search) |
+                Q(unidade_sanitaria__nome__icontains=search) |
+                Q(nome__icontains=search)
+            )
+            return Inquerito.objects.filter(filter).order_by('-id')
+        return Inquerito.objects.all().order_by('-id')
     
     def resolve_servicos_prevencaos(self, info):
         return ServicoPrevencao.objects.all()
