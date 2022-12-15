@@ -4,6 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import re
 from django.db.models import Q
 
+
 def is_authenticated(func):
 
     def wrapper(cls, info, **kwargs):
@@ -26,11 +27,12 @@ def paginate(model_type):
         "results": graphene.List(model_type)
     }
 
-    return type(f"{model_type}Paginated", (graphene.ObjectType,), structure )
+    return type(f"{model_type}Paginated", (graphene.ObjectType,), structure)
+
 
 def resolve_paginated(query_data, info, page_info):
     def get_paginated_data(qs, paginated_type, page):
-        page_size = settings.GRAPHENE.get("PAGE_SIZE", 10)
+        page_size = settings.GRAPHENE.get("PAGE_SIZE", 6)
 
         try:
             qs.count()
@@ -39,7 +41,6 @@ def resolve_paginated(query_data, info, page_info):
 
         p = Paginator(qs, page_size)
 
-
         try:
             page_obj = p.page(page)
         except PageNotAnInteger:
@@ -47,7 +48,7 @@ def resolve_paginated(query_data, info, page_info):
         except EmptyPage:
             page_obj = p.page(p.num_pages)
 
-        result = paginated_type.graphene_type (
+        result = paginated_type.graphene_type(
             total=p.num_pages,
             size=qs.count(),
             current=page_obj.number,
@@ -59,6 +60,7 @@ def resolve_paginated(query_data, info, page_info):
         return result
 
     return get_paginated_data(query_data, info.return_type, page_info)
+
 
 def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall, normspace=re.compile(r'\s{2,}').sub):
     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
