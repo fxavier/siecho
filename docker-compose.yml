@@ -89,9 +89,9 @@ services:
 
   frontend_sondagem:
     build:
-      context: ./instrumento-sondagens
+      context: ../instrumento-sondagens
     volumes:
-      - ./instrumento-sondagens:/instrumento-sondagens
+      - ../instrumento-sondagens:/instrumento-sondagens
     ports:
       - 3000:3000
     depends_on:
