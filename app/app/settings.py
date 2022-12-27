@@ -168,4 +168,5 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://41.191.74.42:3000',
 ]
