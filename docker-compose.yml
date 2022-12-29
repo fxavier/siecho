@@ -87,15 +87,15 @@ services:
       ports:
         - 6379:6379
 
-  frontend_sondagem:
-    build:
-      context: ../instrumento-sondagens
-    volumes:
-      - ../instrumento-sondagens:/instrumento-sondagens
-    ports:
-      - 3000:3000
-    depends_on:
-      - app
+  # frontend_sondagem:
+  #   build:
+  #     context: ../instrumento-sondagens
+  #   volumes:
+  #     - ../instrumento-sondagens:/instrumento-sondagens
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - app
 
   
   # frontend_stock_mgt:
