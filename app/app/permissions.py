@@ -32,7 +32,7 @@ def paginate(model_type):
 
 def resolve_paginated(query_data, info, page_info):
     def get_paginated_data(qs, paginated_type, page):
-        page_size = settings.GRAPHENE.get("PAGE_SIZE", 6)
+        page_size = settings.GRAPHENE.get("PAGE_SIZE", 5)
 
         try:
             qs.count()
