@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('', include('core.urls', namespace='core')),
-    path('api/assistencia-tecnica/', include('assistencia_tecnica.urls')),
+    path('api/v1/assistencia-tecnica/', include('assistencia_tecnica.urls')),
     path('api/v1/si-stock/', include('si_stock.urls')),
 ]
 
