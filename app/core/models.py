@@ -222,7 +222,7 @@ class TxCurrCounter(models.Model):
     value = models.IntegerField()
 
     def increment_value(self):
-        self.value += 7
+        self.value += 21
         self.save()
 
     def __str__(self):
