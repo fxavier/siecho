@@ -166,10 +166,12 @@ AUTH_USER_MODEL = 'user.User'
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'http://41.191.74.42:3000',
-    'http://41.191.74.42:5000',
-    'http://10.0.2.2',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://localhost:5000',
+#     'http://41.191.74.42:3000',
+#     'http://41.191.74.42:5000',
+#     'http://10.0.2.2',
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
