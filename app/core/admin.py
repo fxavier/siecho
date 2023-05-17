@@ -4,8 +4,8 @@ from django.utils.translation import gettext as _
 from import_export.admin import ImportExportMixin
 
 from core.models import DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile, Period, \
-                        ReportYear, ReportMonth, ReportPeriodType, ReportPeriod, TxCurrNewPvlsTrim, TxCurrNewPvlsMonth, \
-                        TxML, TxMLMonth, TxRTT, TxRTTMonth, DSD, CXCA
+    ReportYear, ReportMonth, ReportPeriodType, ReportPeriod, TxCurrNewPvlsTrim, TxCurrNewPvlsMonth, \
+    TxML, TxMLMonth, TxRTT, TxRTTMonth, DSD, CXCA, TxCurrCounter
 
 from openmrs_viamo.models import Visit, MissedAppointment
 
@@ -13,6 +13,7 @@ from assistencia_tecnica.models import Provincia, Distrito, UnidadeSanitaria, Se
 from user.models import User
 from si_stock.models import Provincia as ProvinciaStock, Sector as SectorStock, Instrumento, Entrada, Requisicao, Aprovacao, Resumo, ResumoVisualizacao, Necessidade
 from sondagemIS.models import Intervencao, FaixaEtaria, ServicoPrevencao, ServicoCuidadosTratamento, SectorClinico, Inquerito
+
 
 # classes = [
 #     DataSet, Province, District, HealthFacility, DataElement, DataElementValue, ExcelFile, CsvFile
@@ -40,135 +41,186 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')
         }),
     )
-    
+
+
 class ReportYearAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'designacao']
-    
+
+
 class TXMLAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class TXMLMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class TxRTTMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class TXRTTAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class DSDAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class CXCAAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class ReportMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'month', 'code', 'reportperiodtype']
-    
+
+
 class ReportPeriodTypeAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'designation']
-    
+
+
 class ReportPeriodAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'reportyear', 'reportmonth', 'dhis_format']
+
+
 class PeriodAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dhis_designation', 'period_type']
     list_filter = ('period_type', 'dhis_designation')
-    
+
+
 class DataElementAdmin(ImportExportMixin, admin.ModelAdmin):
     ordering = ['name']
-    list_display = ['id', 'name', 'categoryOptionCombo', 'attributeOptionCombo', 'dataSet']
-    
+    list_display = ['id', 'name', 'categoryOptionCombo',
+                    'attributeOptionCombo', 'dataSet']
+
+
 class DataSetAdmin(ImportExportMixin, admin.ModelAdmin):
     ordering = ['name']
     list_display = ['id', 'name']
-    
+
+
 class DataElementValueAdmin(ImportExportMixin, admin.ModelAdmin):
     ordering = ['period']
-    list_display = ['dataElement', 'period', 'healthFacility', 'value', 'dataset', 'synced']
-    
-    
+    list_display = ['dataElement', 'period',
+                    'healthFacility', 'value', 'dataset', 'synced']
+
+
 class HealthFacilityAdmin(ImportExportMixin, admin.ModelAdmin):
-    ordering = ['province_name']   
-    list_display = ['id','code', 'province_name', 'district_name','healthfacility_name']
-    
+    ordering = ['province_name']
+    list_display = ['id', 'code', 'province_name',
+                    'district_name', 'healthfacility_name']
+
+
 class TxCurrNewPvlsTrimAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class TxCurrNewPvlsMonthAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'dataelement', 'code']
-    
+
+
 class VisitAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = [
-             'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender', 'appointment_date',
-             'next_appointment_date', 'synced'
-              ]
-    
+        'id', 'province', 'district', 'health_facility', 'patient_identifier', 'age', 'gender', 'appointment_date',
+        'next_appointment_date', 'synced'
+    ]
+
+
 class MissedAppointmentAdmin(ImportExportMixin, admin.ModelAdmin):
-     list_display = [
-             'id', 'province', 'district', 'health_facility','patient_identifier', 'age', 'gender',
-             'last_appointment_date', 'synced'
-              ]
-     
+    list_display = [
+        'id', 'province', 'district', 'health_facility', 'patient_identifier', 'age', 'gender',
+        'last_appointment_date', 'synced'
+    ]
+
+
 class ProvinciaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome']
-    
+
+
 class DistritoAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome', 'provincia']
-    
+
 
 class UnidadeSanitariaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome', 'distrito']
-    
+
+
 class SectorAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id','nome']
-    
+    list_display = ['id', 'nome']
+
+
 class AreaAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome', 'sector']
-    
+
+
 class IndicadorAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'nome', 'area'] 
-    
+    list_display = ['id', 'nome', 'area']
+
+
 class FichaAssistenciaTecnicaAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'nome_responsavel', 'nome_provedor', 'problemas_identificados', 'tipo_problema', 'atcividades_realizar_resolver_problema']
-    
-    
+    list_display = ['id', 'nome_responsavel', 'nome_provedor', 'problemas_identificados',
+                    'tipo_problema', 'atcividades_realizar_resolver_problema']
+
+
 class ProvinciaAdminStock(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome']
+
 
 class SectorAdminStock(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'provincia', 'nome']
     list_filter = ('nome', 'provincia',)
-    
+
+
 class InstrumentoAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'provincia', 'sector', 'nome', 'stock', 'ano', 'quantidade_necessaria']
+    list_display = ['id', 'provincia', 'sector',
+                    'nome', 'stock', 'ano', 'quantidade_necessaria']
     list_filter = ('provincia', 'sector', 'nome',)
-    
+
+
 class NecessidadeAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'provincia', 'sector', 'instrumento', 'ano', 'quantidade']
+    list_display = ['id', 'provincia', 'sector',
+                    'instrumento', 'ano', 'quantidade']
     list_filter = ('provincia', 'sector',)
-    
+
+
 class EntradaAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'data_entrada', 'fornecedor', 'quantidade', 'provincia','instrumento']
+    list_display = ['id', 'data_entrada', 'fornecedor',
+                    'quantidade', 'provincia', 'instrumento']
     list_filter = ('provincia',)
-    
+
+
 class LevantamentoDepositoAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'data_levantamento', 'provincia', 'instrumento', 'quantidade']
-    
+    list_display = ['id', 'data_levantamento',
+                    'provincia', 'instrumento', 'quantidade']
+
+
 class RequisicaoAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'data_requisicao', 'provincia', 'instrumento', 'quantidade', 'status_requisicao']
-    
+    list_display = ['id', 'data_requisicao', 'provincia',
+                    'instrumento', 'quantidade', 'status_requisicao']
+
+
 class AprovacaoAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'requisicao', 'tipo_aprovacao', 'comentario']
-    
+
+
 class ResumoAdmin(admin.ModelAdmin):
-    list_display = ['provincia', 'sector', 'instrumento', 'data_entrada', 'quantidade', 'stock', 'necessidade', 'data_requisicao', 'quantidade_requisicao', 'status_requisicao']
+    list_display = ['provincia', 'sector', 'instrumento', 'data_entrada', 'quantidade',
+                    'stock', 'necessidade', 'data_requisicao', 'quantidade_requisicao', 'status_requisicao']
     list_filter = ('provincia', 'sector',)
-    
+
+
 class IntervencaoAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ['id', 'nome']
-    
+
+
 class InqueritoAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = ['id', 'nome', 'provincia', 'distrito', 'unidade_sanitaria', 'data_inquerito', 'razoes_procura_servicos', 'faixa_etaria', 'sector_clinico']
+    list_display = ['id', 'nome', 'provincia', 'distrito', 'unidade_sanitaria',
+                    'data_inquerito', 'razoes_procura_servicos', 'faixa_etaria', 'sector_clinico']
+
+
+class TxCurrCounterAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = ['id', 'date', 'hour', 'value']
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(TxML, TXMLAdmin)
@@ -215,5 +267,6 @@ admin.site.register(SectorClinico)
 admin.site.register(ServicoCuidadosTratamento)
 admin.site.register(ServicoPrevencao)
 admin.site.register(Inquerito, InqueritoAdmin)
+admin.site.register(TxCurrCounter, TxCurrCounterAdmin)
 
 admin.site.site_header = 'ECHO SYSTEMS'
